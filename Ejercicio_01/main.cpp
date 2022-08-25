@@ -3,6 +3,20 @@
 #include <string.h>
 using namespace std;
 
+void guardarEnArchivo(FILE *arch);
+void leerArchivo(FILE *arch);
+
+int main()
+{
+
+    FILE *arch;
+
+    guardarEnArchivo(arch);
+    leerArchivo(arch);
+
+    return 0;
+}
+
 void guardarEnArchivo(FILE *arch)
 {
     arch = fopen("ArchivoValoresFloat3.dat", "wb");
@@ -42,15 +56,4 @@ void leerArchivo(FILE *arch)
     }
 
     fclose(arch);
-}
-
-int main()
-{
-
-    FILE *arch;
-
-    guardarEnArchivo(arch);
-    leerArchivo(arch);
-
-    return 0;
 }

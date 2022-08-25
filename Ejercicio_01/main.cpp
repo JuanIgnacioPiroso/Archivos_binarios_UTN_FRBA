@@ -3,10 +3,10 @@
 #include <string.h>
 using namespace std;
 
-int main()
+void guardarEnArchivo(FILE *arch)
 {
+    arch = fopen("ArchivoValoresFloat3.dat", "wb");
 
-    FILE *arch = fopen("ArchivoValoresFloat.dat", "wb+");
     int n = 0;
     int i = 0;
     float numero = 0;
@@ -24,8 +24,16 @@ int main()
     }
 
     rewind(arch);
+    fclose(arch);
+}
+
+void leerArchivo(FILE *arch)
+{
+    arch = fopen("ArchivoValoresFloat2.dat", "rb");
+    float numero;
     cout << "Los valores ingresados son: " << endl;
     fread(&numero, sizeof(float), 1, arch);
+
     while (!feof(arch))
     {
 
@@ -34,6 +42,15 @@ int main()
     }
 
     fclose(arch);
+}
+
+int main()
+{
+
+    FILE *arch;
+
+    guardarEnArchivo(arch);
+    leerArchivo(arch);
 
     return 0;
 }

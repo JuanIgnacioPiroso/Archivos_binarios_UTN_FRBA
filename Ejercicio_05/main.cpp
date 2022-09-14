@@ -2,7 +2,7 @@
 #include <stdio.h>
 using namespace std;
 
-void apareo(char namefile1[], char namefile2[], char namefileout[]);
+void apareoDescendente(char namefile1[], char namefile2[], char namefileout[]);
 
 int main()
 {
@@ -25,9 +25,9 @@ int main()
     fclose(arch2);
 
     FILE *salida;
-    apareo("arch1.dat", "arch2.dat", "salida.dat");
+    apareoDescendente("arch1.dat", "arch2.dat", "salida.dat");
 
-    FILE* arch4;
+    FILE *arch4;
 
     arch4 = fopen("salida.dat", "rb");
     while (fread(&x1, sizeof(int), 1, arch4))
@@ -38,7 +38,7 @@ int main()
     return 0;
 }
 
-void apareo(char ruta_archivo1[], char ruta_archivo2[], char ruta_archivosalida[])
+void apareoDescendente (char ruta_archivo1[], char ruta_archivo2[], char ruta_archivosalida[])
 {
     FILE *f1, *f2, *salida;
     f1 = fopen(ruta_archivo1, "rb");
@@ -47,10 +47,10 @@ void apareo(char ruta_archivo1[], char ruta_archivo2[], char ruta_archivosalida[
     int num1, num2;
     while (fread(&num1, sizeof(int), 1, f1) && fread(&num2, sizeof(int), 1, f2))
     {
-        if (num1 < num2)
+        if (num1 > num2)
         {
             fwrite(&num1, sizeof(int), 1, salida);
-             fseek(f2, (-1) * sizeof(int), SEEK_CUR);
+            fseek(f2, (-1) * sizeof(int), SEEK_CUR);
         }
         else
         {
@@ -60,17 +60,15 @@ void apareo(char ruta_archivo1[], char ruta_archivo2[], char ruta_archivosalida[
     }
     while (!feof(f1))
     {
-        fwrite(&num1, sizeof(int), 1, salida);
         fread(&num1, sizeof(int), 1, f1);
+        fwrite(&num1, sizeof(int), 1, salida);
     }
-
     while (!feof(f2))
     {
-        fwrite(&num2, sizeof(int), 1, salida);
         fread(&num2, sizeof(int), 1, f2);
+        fwrite(&num2, sizeof(int), 1, salida);
     }
     fclose(f1);
     fclose(f2);
     fclose(salida);
-    return;
 }

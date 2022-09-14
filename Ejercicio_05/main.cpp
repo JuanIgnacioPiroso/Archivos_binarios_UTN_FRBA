@@ -3,6 +3,7 @@
 using namespace std;
 
 void apareoDescendente(char namefile1[], char namefile2[], char namefileout[]);
+void burbujaDescendenteArchivos(char ruta_archivo[], int cant);
 
 int main()
 {
@@ -25,6 +26,8 @@ int main()
     fclose(arch2);
 
     FILE *salida;
+    burbujaDescendenteArchivos("arch1.dat", 4);
+    burbujaDescendenteArchivos("arch2.dat", 3);
     apareoDescendente("arch1.dat", "arch2.dat", "salida.dat");
 
     FILE *arch4;
@@ -38,7 +41,31 @@ int main()
     return 0;
 }
 
-void apareoDescendente (char ruta_archivo1[], char ruta_archivo2[], char ruta_archivosalida[])
+void burbujaDescendenteArchivos(char ruta_archivo[], int cant)
+{
+    FILE *arch;
+    arch = fopen(ruta_archivo, "rb+");
+    int aux;
+    int num1, num2;
+    for (int i = 0; i < cant; i++)
+    {
+        for (int j = 0; j < cant - 1; j++)
+        {
+            fseek(arch, j * sizeof(int), SEEK_SET);
+            fread(&num1, sizeof(int), 1, arch);
+            fread(&num2, sizeof(int), 1, arch);
+            if (num1 < num2)
+            {
+                fseek(arch, (-2) * sizeof(int), SEEK_CUR);
+                fwrite(&num2, sizeof(int), 1, arch);
+                fwrite(&num1, sizeof(int), 1, arch);
+            }
+        }
+    }
+    fclose(arch);
+}
+
+void apareoDescendente(char ruta_archivo1[], char ruta_archivo2[], char ruta_archivosalida[])
 {
     FILE *f1, *f2, *salida;
     f1 = fopen(ruta_archivo1, "rb");
